@@ -14,7 +14,7 @@ public class SwaggerConfig {
 
     @Bean
     public OpenAPI swagger() {
-        Info info = new Info()
+        Info info = new io.swagger.v3.oas.models.info.Info()
                 .title("Stock Mate")
                 .description("모의 주식투자 및 게시판 공유").version("0.0.1");
 
