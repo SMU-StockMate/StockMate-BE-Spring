@@ -1,6 +1,5 @@
 package SMU.StockMate.global.apiPayload.code.error;
 
-import SMU.StockMate.global.apiPayload.CustomResponse;
 import org.springframework.http.HttpStatus;
 
 public interface BaseErrorCode {
@@ -9,7 +8,4 @@ public interface BaseErrorCode {
     String getCode();
     String getMessage();
 
-    default CustomResponse<Void> getErrorResponse() {
-        return CustomResponse.onFailure(getCode(), getMessage());
-    }
 }
