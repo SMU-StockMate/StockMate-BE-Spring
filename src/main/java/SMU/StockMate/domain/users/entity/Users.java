@@ -1,8 +1,12 @@
 package SMU.StockMate.domain.users.entity;
 
+import SMU.StockMate.domain.notification.entity.Notification;
 import SMU.StockMate.global.entity.BaseEntity;
 import jakarta.persistence.*;
 import lombok.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Table(name = "users")
 @Entity
@@ -33,4 +37,7 @@ public class Users extends BaseEntity {
     private Long totalReturns; // 총 수익률
 
     private String FcmToken;
+
+    @OneToMany(mappedBy = "notification", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Notification> notifications = new ArrayList<Notification>();
 }
