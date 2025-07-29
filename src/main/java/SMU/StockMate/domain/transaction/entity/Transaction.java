@@ -2,7 +2,7 @@ package SMU.StockMate.domain.transaction.entity;
 
 import SMU.StockMate.domain.stock.entity.Stock;
 import SMU.StockMate.domain.transaction.enums.Type;
-import SMU.StockMate.domain.users.entity.Users;
+import SMU.StockMate.domain.users.entity.User;
 import SMU.StockMate.global.entity.BaseEntity;
 import jakarta.persistence.*;
 import lombok.*;
@@ -34,6 +34,6 @@ public class Transaction extends BaseEntity {
     private Stock stock;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "users_id")
-    private Users users;
+    @JoinColumn(name = "user_id")
+    private User user;
 }

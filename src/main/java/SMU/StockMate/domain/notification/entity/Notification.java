@@ -1,7 +1,7 @@
 package SMU.StockMate.domain.notification.entity;
 
 import SMU.StockMate.domain.notification.enums.Type;
-import SMU.StockMate.domain.users.entity.Users;
+import SMU.StockMate.domain.users.entity.User;
 import SMU.StockMate.global.entity.BaseEntity;
 import jakarta.persistence.*;
 import lombok.*;
@@ -23,10 +23,10 @@ public class Notification extends BaseEntity {
     @Column(name = "is_read")
     private boolean isRead = false;
 
-    @Enumerated(EnumType.STRING)
-    private Type type;
+//    @Enumerated(EnumType.STRING)
+//    private Type type;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "users_id")
-    private Users users;
+    private User user;
 }

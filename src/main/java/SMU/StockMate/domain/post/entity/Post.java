@@ -1,7 +1,7 @@
 package SMU.StockMate.domain.post.entity;
 
 import SMU.StockMate.domain.stock.entity.Stock;
-import SMU.StockMate.domain.users.entity.Users;
+import SMU.StockMate.domain.users.entity.User;
 import SMU.StockMate.global.entity.BaseEntity;
 import jakarta.persistence.*;
 import lombok.*;
@@ -30,6 +30,6 @@ public class Post extends BaseEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "users_id")
-    private Users users;
+    private User user;
 
 }
