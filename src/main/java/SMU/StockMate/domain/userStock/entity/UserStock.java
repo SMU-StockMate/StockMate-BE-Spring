@@ -1,6 +1,6 @@
 package SMU.StockMate.domain.userStock.entity;
 
-import SMU.StockMate.domain.users.entity.Users;
+import SMU.StockMate.domain.users.entity.User;
 import SMU.StockMate.global.entity.BaseEntity;
 import jakarta.persistence.*;
 import lombok.*;
@@ -11,7 +11,7 @@ import lombok.*;
 @Builder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
-public class userStock extends BaseEntity {
+public class UserStock extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -28,5 +28,5 @@ public class userStock extends BaseEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "users_id")
-    private Users users;
+    private User user;
 }
