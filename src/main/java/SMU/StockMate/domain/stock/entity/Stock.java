@@ -18,4 +18,10 @@ public class Stock extends BaseEntity {
 
     @Column(name = "stock_code")
     private String stockCode;
+
+    private String standardCode;
+
+    private String koreanName;
+
+    private int basePrice;
 }
