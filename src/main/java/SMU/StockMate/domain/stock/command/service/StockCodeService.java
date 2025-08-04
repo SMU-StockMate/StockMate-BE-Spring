@@ -8,7 +8,8 @@ import java.util.List;
 public interface StockCodeService {
 
     // 코스피 종목의 정보를 받아온다
-    public List<StockCodeDto> retrieveKospiMst();
+    List<StockCodeDto> retrieveKospiCode();
 
-//    public List<StockCodeDto> retrieveKosdacMst();
+    // 코스닥 정보를 받아온다
+    List<StockCodeDto> retrieveKosdacCode();
 }
