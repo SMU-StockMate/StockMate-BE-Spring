@@ -1,8 +1,8 @@
 ---
-name: "✨ FEATURE"
-about: 기능 개발 이슈템플릿입니다.
-title: "✨ feat: "
-labels: feat
+name: "🐛 FIX"
+about: 버그 수정 이슈템플릿입니다.
+title: "🐛 fix: "
+labels: fix
 assignees: ''
 
 ---
