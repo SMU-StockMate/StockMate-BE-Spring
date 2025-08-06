@@ -1,7 +1,9 @@
 package SMU.StockMate.domain.stock.command.service;
 
-import org.springframework.stereotype.Service;
+import SMU.StockMate.domain.stock.entity.Stock;
+
+import java.util.List;
 
 public interface StockInfoUpdateService {
-    public void update();
+    void refresh(List<Stock> stocks);
 }

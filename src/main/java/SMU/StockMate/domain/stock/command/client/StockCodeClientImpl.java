@@ -1,11 +1,15 @@
-package SMU.StockMate.domain.stock.command.service;
+package SMU.StockMate.domain.stock.command.client;
 
 import SMU.StockMate.domain.stock.command.dto.MarketParsingRule;
 import SMU.StockMate.domain.stock.command.dto.StockCodeDto;
+import SMU.StockMate.domain.stock.command.exception.ParsingErrorCode;
 import SMU.StockMate.global.apiPayload.exception.CustomException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClient;
+import reactor.core.publisher.Mono;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -15,7 +19,7 @@ import java.util.zip.ZipInputStream;
 
 @Component
 @RequiredArgsConstructor
-public class StockCodeServiceImpl implements StockCodeService {
+public class StockCodeClientImpl implements StockCodeClient {
 
     private final WebClient webClient;
 
@@ -24,8 +28,8 @@ public class StockCodeServiceImpl implements StockCodeService {
      * @return
      */
     @Override
-    public List<StockCodeDto> retrieveKospiCode() {
-        return retrieveStockMst(
+    public List<StockCodeDto> getKospiCode() {
+        return getStockMst(
                 "https://new.real.download.dws.co.kr/common/master/kospi_code.mst.zip",
                 MarketParsingRule.KOSPI
         );
@@ -36,8 +40,8 @@ public class StockCodeServiceImpl implements StockCodeService {
      * @return
      */
     @Override
-    public List<StockCodeDto> retrieveKosdacCode() {
-        return retrieveStockMst(
+    public List<StockCodeDto> getKosdacCode() {
+        return getStockMst(
                 "https://new.real.download.dws.co.kr/common/master/kosdaq_code.mst.zip",
                 MarketParsingRule.KOSDAC
         );
@@ -49,10 +53,12 @@ public class StockCodeServiceImpl implements StockCodeService {
      * @param rule
      * @return
      */
-    private List<StockCodeDto> retrieveStockMst(String uri, MarketParsingRule rule) {
+    private List<StockCodeDto> getStockMst(String uri, MarketParsingRule rule) {
         return webClient.get()
                 .uri(uri)
                 .retrieve()
+                .onStatus(HttpStatusCode::is4xxClientError, clientResponse -> Mono.error(new CustomException(ParsingErrorCode.HTTP_CLIENT_ERROR)))
+                .onStatus(HttpStatusCode::is5xxServerError, clientResponse -> Mono.error(new CustomException(ParsingErrorCode.HTTP_SERVER_ERROR)))
                 .bodyToMono(byte[].class)
                 .map(zipData -> parseZipFile(zipData, rule))
                 .block();

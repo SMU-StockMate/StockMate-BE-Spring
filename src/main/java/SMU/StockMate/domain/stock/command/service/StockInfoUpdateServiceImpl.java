@@ -1,5 +1,6 @@
 package SMU.StockMate.domain.stock.command.service;
 
+import SMU.StockMate.domain.stock.command.client.StockCodeClient;
 import SMU.StockMate.domain.stock.command.converter.StockConverter;
 import SMU.StockMate.domain.stock.command.repository.StockCommandRepository;
 import SMU.StockMate.domain.stock.entity.Stock;
@@ -15,28 +16,15 @@ import java.util.stream.Stream;
 @RequiredArgsConstructor
 @Transactional
 public class StockInfoUpdateServiceImpl implements StockInfoUpdateService {
-    private final StockCodeService stockCodeService;
-    private final StockConverter stockConverter;
     private final StockCommandRepository stockRepository;
 
     /**
      * 기존 테이블의 데이터 전체 삭제 후 업데이트
      */
     @Override
-    public void update() {
-        List<Stock> stocks = combineAllStocks();
-
+    public void refresh(List<Stock> stocks) {
         stockRepository.deleteAll();
         stockRepository.saveAll(stocks);
-    }
-
-    private List<Stock> combineAllStocks() {
-        return Stream.of(
-                        stockCodeService.retrieveKospiCode(),
-                        stockCodeService.retrieveKosdacCode()
-                ).flatMap(Collection::stream)
-                .map(stockConverter::toStock)
-                .toList();
     }
 
 }
