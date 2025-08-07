@@ -1,5 +1,6 @@
 package SMU.StockMate.global.config;
 
+import SMU.StockMate.domain.auth.jwt.JwtUtil;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
