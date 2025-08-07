@@ -4,6 +4,8 @@ import SMU.StockMate.global.entity.BaseEntity;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.time.LocalDate;
+
 @Table(name = "stock")
 @Entity
 @Getter
@@ -24,4 +26,6 @@ public class Stock extends BaseEntity {
     private String koreanName;
 
     private int basePrice;
+
+    private LocalDate updateDate;
 }
