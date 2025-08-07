@@ -10,3 +10,9 @@ springdoc:
     path: /swagger-ui.html
     display-request-duration: true
     try-it-out-enabled: true
+
+
+kis:
+  api:
+    app-key: ${KIS_APPKEY} # 개인 한국 투자 증권 APP KEY
+    app-secret: ${KIS_APPSECRET} # 개인 한국 투자 증권 APP SECRET
