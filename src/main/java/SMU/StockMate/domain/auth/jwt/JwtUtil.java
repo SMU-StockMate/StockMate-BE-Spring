@@ -6,7 +6,6 @@ import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.stereotype.Component;
 
 import javax.crypto.SecretKey;
@@ -24,8 +23,8 @@ public class JwtUtil {
     private final Duration refreshExpiration;
 
     public JwtUtil(@Value("${spring.jwt.secret}") String secret,
-                   @Value("${Jwt.time.access-expiration}") long accessExpiration,
-                   @Value("${Jwt.time.refresh-expiration}") long refreshExpiration) {
+                   @Value("${spring.jwt.time.access-expiration}") long accessExpiration,
+                   @Value("${spring.jwt.time.refresh-expiration}") long refreshExpiration) {
         this.secretKey = new SecretKeySpec(secret.getBytes(StandardCharsets.UTF_8),
                 Jwts.SIG.HS256.key().build().getAlgorithm());
         this.accessExpiration = Duration.ofMillis(accessExpiration);
@@ -36,10 +35,6 @@ public class JwtUtil {
     // claim은 key, value로 이루어져 있음
     public String getUsername(String token) {
         return parseClaims(token).get("username", String.class);
-    }
-
-    public String getRole(String token) {
-        return parseClaims(token).get("role", String.class);
     }
 
     public Boolean isExpired(String token) {
@@ -81,12 +76,12 @@ public class JwtUtil {
     }
 
     // ======== 토큰 생성 ========
-    public String createAccessToken(String username, Long expiredMs) {
-        return creteToken(username, expiredMs);
+    public String createAccessToken(String username) {
+        return creteToken(username, accessExpiration.toMillis());
     }
 
-    public String createRefreshToken(String username, Long expireMs) {
-        return creteToken(username, expireMs);
+    public String createRefreshToken(String username) {
+        return creteToken(username, refreshExpiration.toMillis());
     }
 
     private String creteToken(String username, Long ms) {
