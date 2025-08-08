@@ -1,5 +1,6 @@
 package SMU.StockMate.domain.auth.userDetails;
 
+import SMU.StockMate.domain.auth.dto.UserDetailsDTO;
 import SMU.StockMate.domain.users.entity.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
@@ -11,7 +12,7 @@ import java.util.Collections;
 @RequiredArgsConstructor
 public class CustomUserDetails implements UserDetails {
 
-    private final User user;
+    private final UserDetailsDTO user;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -20,12 +21,12 @@ public class CustomUserDetails implements UserDetails {
 
     @Override
     public String getPassword() {
-        return user.getPassword();
+        return user.password();
     }
 
     @Override
     public String getUsername() {
-        return user.getEmail();
+        return user.email();
     }
 
     @Override

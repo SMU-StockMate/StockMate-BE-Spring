@@ -1,5 +1,6 @@
 package SMU.StockMate.domain.auth.filter;
 
+import SMU.StockMate.domain.auth.dto.UserDetailsDTO;
 import SMU.StockMate.domain.auth.jwt.JwtUtil;
 import SMU.StockMate.domain.auth.userDetails.CustomUserDetails;
 import SMU.StockMate.domain.users.entity.User;
@@ -45,9 +46,9 @@ public class JwtFilter extends OncePerRequestFilter {
         String username = jwtUtil.getUsername(token);
 
         // 5. UserDetails 객체 생성
-        User user = User.builder()
+        UserDetailsDTO user = UserDetailsDTO.builder()
                 .email(username)
-                .password("N/A") // 실제 비밀번호는 필요 없음
+                .password("N/A")
                 .build();
 
         CustomUserDetails customUserDetails = new CustomUserDetails(user);

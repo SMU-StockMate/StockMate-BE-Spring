@@ -1,5 +1,6 @@
 package SMU.StockMate.domain.auth.userDetails;
 
+import SMU.StockMate.domain.auth.dto.UserDetailsDTO;
 import SMU.StockMate.domain.users.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -16,7 +17,10 @@ public class CustomUserDetailsService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         return userRepository.findByEmail(username)
-                .map(CustomUserDetails::new)
+                .map(user -> {
+                    UserDetailsDTO userDTO = UserDetailsDTO.of(user);
+                    return new CustomUserDetails(userDTO);
+                })
                 .orElseThrow(() ->
                         new UsernameNotFoundException("해당 사용자를 찾을 수 없습니다."));
     }
