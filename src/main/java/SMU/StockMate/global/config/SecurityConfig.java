@@ -1,5 +1,7 @@
 package SMU.StockMate.global.config;
 
+import SMU.StockMate.domain.auth.filter.JwtFilter;
+import SMU.StockMate.domain.auth.filter.LoginFilter;
 import SMU.StockMate.domain.auth.jwt.JwtUtil;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
@@ -66,7 +68,7 @@ public class SecurityConfig {
                 }));
         http
                 .authorizeHttpRequests((auth) -> auth
-                        .requestMatchers("/login", "/", "/join").permitAll()
+                        .requestMatchers("/login", "/auth/**").permitAll()
                         .requestMatchers("/admin").hasRole("ADMIN")
                         .anyRequest().authenticated());
 
