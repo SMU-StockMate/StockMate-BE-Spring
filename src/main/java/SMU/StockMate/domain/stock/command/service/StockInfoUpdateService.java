@@ -2,8 +2,9 @@ package SMU.StockMate.domain.stock.command.service;
 
 import SMU.StockMate.domain.stock.entity.Stock;
 
+import java.time.LocalDate;
 import java.util.List;
 
 public interface StockInfoUpdateService {
-    void refresh(List<Stock> stocks);
+    int refresh(List<Stock> stocks);
 }
