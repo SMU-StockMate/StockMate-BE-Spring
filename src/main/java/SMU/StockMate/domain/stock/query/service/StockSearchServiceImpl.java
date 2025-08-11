@@ -10,6 +10,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 
 
@@ -23,12 +24,13 @@ public class StockSearchServiceImpl implements StockSearchService {
     public StockInfoResponse search(String keyword, String cursor) {
         Pageable pageable = PageRequest.of(0, DEFAULT_PAGE_SIZE + 1);
         List<Stock> stocks;
+        LocalDate date = LocalDate.now();
 
         if (cursor == null || cursor.isEmpty()) {
-            stocks = stockRepository.findByNameContaining(keyword, pageable);
+            stocks = stockRepository.findByNameContaining(date, keyword, pageable);
         } else {
             long cursorId = Long.parseLong(cursor);
-            stocks = stockRepository.findByNameContainingNextPage(cursorId, keyword, pageable);
+            stocks = stockRepository.findByNameContainingNextPage(cursorId, date, keyword, pageable);
         }
 
         boolean hasMore = stocks.size() > DEFAULT_PAGE_SIZE;
