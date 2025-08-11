@@ -1,7 +1,6 @@
 package SMU.StockMate.domain.notification.entity;
 
-import SMU.StockMate.domain.notification.enums.Type;
-import SMU.StockMate.domain.users.entity.User;
+import SMU.StockMate.domain.user.entity.User;
 import SMU.StockMate.global.entity.BaseEntity;
 import jakarta.persistence.*;
 import lombok.*;
@@ -27,6 +26,6 @@ public class Notification extends BaseEntity {
 //    private Type type;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "users_id")
+    @JoinColumn(name = "user_id")
     private User user;
 }

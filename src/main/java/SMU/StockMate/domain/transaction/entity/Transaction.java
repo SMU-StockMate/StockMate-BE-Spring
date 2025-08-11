@@ -2,7 +2,7 @@ package SMU.StockMate.domain.transaction.entity;
 
 import SMU.StockMate.domain.stock.entity.Stock;
 import SMU.StockMate.domain.transaction.enums.Type;
-import SMU.StockMate.domain.users.entity.User;
+import SMU.StockMate.domain.user.entity.User;
 import SMU.StockMate.global.entity.BaseEntity;
 import jakarta.persistence.*;
 import lombok.*;

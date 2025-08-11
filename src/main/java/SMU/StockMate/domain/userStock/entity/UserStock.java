@@ -1,6 +1,6 @@
 package SMU.StockMate.domain.userStock.entity;
 
-import SMU.StockMate.domain.users.entity.User;
+import SMU.StockMate.domain.user.entity.User;
 import SMU.StockMate.global.entity.BaseEntity;
 import jakarta.persistence.*;
 import lombok.*;
@@ -27,6 +27,6 @@ public class UserStock extends BaseEntity {
     private Long returns; // 수익률
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "users_id")
+    @JoinColumn(name = "user_id")
     private User user;
 }

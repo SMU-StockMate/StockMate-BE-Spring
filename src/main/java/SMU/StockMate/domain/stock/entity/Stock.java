@@ -27,5 +27,5 @@ public class Stock extends BaseEntity {
 
     private int basePrice;
 
-    private LocalDate updateDate;
+    private boolean isActivate;
 }
