@@ -1,6 +1,6 @@
 package SMU.StockMate.domain.auth.dto;
 
-import SMU.StockMate.domain.users.entity.User;
+import SMU.StockMate.domain.user.entity.User;
 import lombok.Builder;
 
 @Builder

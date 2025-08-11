@@ -1,7 +1,6 @@
 package SMU.StockMate.domain.auth.userDetails;
 
 import SMU.StockMate.domain.auth.dto.UserDetailsDTO;
-import SMU.StockMate.domain.users.entity.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;

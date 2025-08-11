@@ -1,7 +1,7 @@
 package SMU.StockMate.domain.auth.userDetails;
 
 import SMU.StockMate.domain.auth.dto.UserDetailsDTO;
-import SMU.StockMate.domain.users.repository.UserRepository;
+import SMU.StockMate.domain.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;

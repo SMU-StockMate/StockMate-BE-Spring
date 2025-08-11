@@ -1,6 +1,6 @@
-package SMU.StockMate.domain.users.repository;
+package SMU.StockMate.domain.user.repository;
 
-import SMU.StockMate.domain.users.entity.User;
+import SMU.StockMate.domain.user.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;

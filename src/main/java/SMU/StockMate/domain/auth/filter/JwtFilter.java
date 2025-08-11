@@ -3,7 +3,6 @@ package SMU.StockMate.domain.auth.filter;
 import SMU.StockMate.domain.auth.dto.UserDetailsDTO;
 import SMU.StockMate.domain.auth.jwt.JwtUtil;
 import SMU.StockMate.domain.auth.userDetails.CustomUserDetails;
-import SMU.StockMate.domain.users.entity.User;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;

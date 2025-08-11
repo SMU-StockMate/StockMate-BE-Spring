@@ -1,4 +1,4 @@
-package SMU.StockMate.domain.users.entity;
+package SMU.StockMate.domain.user.entity;
 
 import SMU.StockMate.domain.notification.entity.Notification;
 import SMU.StockMate.global.entity.BaseEntity;
@@ -18,6 +18,7 @@ public class User extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "user_id")
     private Long id;
 
     private String email;
