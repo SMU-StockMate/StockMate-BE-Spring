@@ -41,7 +41,7 @@ public class KisAuthClient {
             String requestJson = objectMapper.writeValueAsString(body);
             HttpEntity<String> request = new HttpEntity<>(requestJson, headers);
 
-            String url = "https://openapi.koreainvestment.com:9443/oauth2/tokenP";
+            String url = "https://openapivts.koreainvestment.com:29443/oauth2/tokenP";
             ResponseEntity<String> response = restTemplate.exchange(url, HttpMethod.POST, request, String.class);
 
             objectMapper.configure(DeserializationFeature.ACCEPT_EMPTY_STRING_AS_NULL_OBJECT, true);

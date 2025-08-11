@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface StockQueryRepository extends JpaRepository<Stock, Long> {
     @Query("SELECT s FROM Stock s " +
@@ -16,4 +17,7 @@ public interface StockQueryRepository extends JpaRepository<Stock, Long> {
     @Query("SELECT s FROM Stock s " +
             "WHERE (s.stockCode LIKE %:keyword% OR s.koreanName LIKE %:keyword%) AND s.id > :cursor ")
     List<Stock> findByNameContainingNextPage(@Param("cursor") Long cursor, @Param("keyword") String keyword, Pageable pageable);
+
+    Optional<Stock> findByStockCode(String stockCode);
+
 }
