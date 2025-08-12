@@ -21,6 +21,8 @@ public class UserStock extends BaseEntity {
 
     private Long quantity; // 보유 수량
 
+    private Long totalAmount; // 총액
+
     @Column(name = "avg_price")
     private Long avgPrice; // 평균 매수 금액
 
@@ -29,4 +31,24 @@ public class UserStock extends BaseEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user;
+
+    public void addStock(Long quantity, Long totalAmount) {
+        this.quantity += quantity;
+        this.totalAmount += totalAmount;
+        updateAvgPrice();
+    }
+
+    public void reduceStock(Long quantity, Long totalAmount) {
+        this.quantity -= quantity;
+        this.totalAmount -= totalAmount;
+        updateAvgPrice();
+    }
+
+    private void updateAvgPrice() {
+        if (this.quantity > 0) {
+            this.avgPrice = this.totalAmount / this.quantity;
+        } else {
+            this.avgPrice = 0L;
+        }
+    }
 }
