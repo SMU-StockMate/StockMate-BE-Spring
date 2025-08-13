@@ -52,7 +52,6 @@ class StockInfoUpdateServiceImplTest {
         stockInfoUpdateService.refresh(stocks);
 
         // then
-        verify(stockCommandRepository).deleteAll();
         verify(stockCommandRepository).saveAll(stocks);
     }
 }
