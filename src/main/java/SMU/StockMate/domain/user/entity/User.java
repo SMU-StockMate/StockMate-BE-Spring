@@ -41,4 +41,16 @@ public class User extends BaseEntity {
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Notification> notifications = new ArrayList<>();
+
+    // 주식을 매수 한 경우
+    public void decreaseBalance(Long cost) {
+        this.stockValuation += cost;
+        this.cashBalance -= cost;
+    }
+
+    // 주식을 매도한 경우
+    public void increaseBalance(Long cost) {
+        this.stockValuation -= cost;
+        this.cashBalance += cost;
+    }
 }
