@@ -26,7 +26,7 @@ public class UserStock extends BaseEntity {
     @Column(name = "avg_price")
     private Long avgPrice; // 평균 매수 금액
 
-    private Long returns; // 수익률
+//    private Long returns; // 수익률
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
