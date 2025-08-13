@@ -5,11 +5,9 @@ import SMU.StockMate.domain.stock.command.dto.StockCodeDto;
 import SMU.StockMate.domain.stock.command.exception.ParsingErrorCode;
 import SMU.StockMate.global.apiPayload.exception.CustomException;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.stereotype.Component;
-import org.springframework.web.reactive.function.client.WebClient;
-import reactor.core.publisher.Mono;
+import org.springframework.web.client.RestClient;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -21,10 +19,11 @@ import java.util.zip.ZipInputStream;
 @RequiredArgsConstructor
 public class StockCodeClientImpl implements StockCodeClient {
 
-    private final WebClient webClient;
+    private final RestClient restClient;
 
     /**
      * 코스피 주식 정보를 가져옴
+     *
      * @return
      */
     @Override
@@ -37,6 +36,7 @@ public class StockCodeClientImpl implements StockCodeClient {
 
     /**
      * 코스닥 주식 정보를 가져옴
+     *
      * @return
      */
     @Override
@@ -49,22 +49,21 @@ public class StockCodeClientImpl implements StockCodeClient {
 
     /**
      * uri를 찾아가 zip 파일을 가져옴
+     *
      * @param uri
      * @param rule
      * @return
      */
     private List<StockCodeDto> getStockMst(String uri, MarketParsingRule rule) {
-        return webClient.get()
+        byte[] zipData = restClient.get()
                 .uri(uri)
                 .retrieve()
-                .onStatus(HttpStatusCode::is4xxClientError, clientResponse -> Mono.error(new CustomException(ParsingErrorCode.HTTP_CLIENT_ERROR)))
-                .onStatus(HttpStatusCode::is5xxServerError, clientResponse -> Mono.error(new CustomException(ParsingErrorCode.HTTP_SERVER_ERROR)))
-                .bodyToMono(byte[].class)
-                .map(zipData -> parseZipFile(zipData, rule))
-                .block();
+                .onStatus(HttpStatusCode::is4xxClientError, (request, response) -> new CustomException(ParsingErrorCode.HTTP_CLIENT_ERROR))
+                .onStatus(HttpStatusCode::is5xxServerError, (request, response) -> new CustomException(ParsingErrorCode.HTTP_SERVER_ERROR))
+                .body(byte[].class);
+        return parseZipFile(zipData, rule);
     }
 
-    //TODO: 두개 비동기 적으로 합치기
 
     /**
      * zip 파일을 읽어 .mst로 끝나는 파일을 parseMstFile 넘겨서 정보 받아오기

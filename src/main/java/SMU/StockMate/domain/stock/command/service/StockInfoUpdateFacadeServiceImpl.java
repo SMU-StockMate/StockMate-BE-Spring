@@ -2,6 +2,7 @@ package SMU.StockMate.domain.stock.command.service;
 
 import SMU.StockMate.domain.stock.command.client.StockCodeClient;
 import SMU.StockMate.domain.stock.command.converter.StockConverter;
+import SMU.StockMate.domain.stock.command.dto.StockCodeDto;
 import SMU.StockMate.domain.stock.command.exception.StockLogErrorCode;
 import SMU.StockMate.domain.stock.entity.Stock;
 import SMU.StockMate.domain.stock.entity.StockUpdateLog;
@@ -14,6 +15,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.util.Collection;
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
 import java.util.stream.Stream;
 
 @Service
@@ -55,12 +57,20 @@ public class StockInfoUpdateFacadeServiceImpl implements StockInfoUpdateFacadeSe
      * kospi kosdac 주식 정보를 불러와서 합침
      */
     private List<Stock> getAllStocks() {
-        return Stream.of(
-                        stockCodeClient.getKospiCode(),
-                        stockCodeClient.getKosdacCode()
-                ).flatMap(Collection::stream)
-                .map(stockConverter::toStock)
-                .toList();
+        CompletableFuture<List<StockCodeDto>> kospiFuture = CompletableFuture.supplyAsync(stockCodeClient::getKospiCode);
+        CompletableFuture<List<StockCodeDto>> kosdacFuture = CompletableFuture.supplyAsync(stockCodeClient::getKosdacCode);
+
+        return CompletableFuture.allOf(kospiFuture, kosdacFuture) // 모든 작업 수행 기다림
+                .thenApply(voidResult -> { // 이후 작업
+                    List<StockCodeDto> kospiCodes = kospiFuture.join();
+                    List<StockCodeDto> kosdacCodes = kosdacFuture.join();
+
+                    return Stream.of(kospiCodes, kosdacCodes)
+                            .flatMap(Collection::stream)
+                            .map(stockConverter::toStock)
+                            .toList();
+                }).join(); // 결과 대기
+
     }
 
 
