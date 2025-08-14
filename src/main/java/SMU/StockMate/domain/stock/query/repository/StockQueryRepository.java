@@ -8,6 +8,7 @@ import org.springframework.data.repository.query.Param;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 public interface StockQueryRepository extends JpaRepository<Stock, Long> {
     @Query("SELECT s FROM Stock s " +
@@ -21,4 +22,7 @@ public interface StockQueryRepository extends JpaRepository<Stock, Long> {
             "AND s.id > :cursor ")
     List<Stock> findByNameContainingNextPage(@Param("cursor") Long cursor, @Param("date") LocalDate date,
                                              @Param("keyword") String keyword, Pageable pageable);
+    
+  Optional<Stock> findByStockCode(String stockCode);
+  
 }

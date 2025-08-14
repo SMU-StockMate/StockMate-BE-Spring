@@ -5,6 +5,8 @@ import SMU.StockMate.global.entity.BaseEntity;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.time.LocalDate;
+
 @Table(name = "daily_stock")
 @Entity
 @Getter
@@ -30,6 +32,8 @@ public class DailyStock extends BaseEntity {
     private Long lowPrice;
 
     private Long volume; // 거래량
+
+    private LocalDate tradeDate;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "stock_id")
