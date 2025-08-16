@@ -47,7 +47,6 @@ public class KisAuthClient {
             objectMapper.configure(DeserializationFeature.ACCEPT_EMPTY_STRING_AS_NULL_OBJECT, true);
 
             TokenResponseDto token = objectMapper.readValue(response.getBody(), TokenResponseDto.class);
-            log.info("발급된 토큰: {}", token.accessToken());
             return token;
 
         } catch (JsonProcessingException e) {
