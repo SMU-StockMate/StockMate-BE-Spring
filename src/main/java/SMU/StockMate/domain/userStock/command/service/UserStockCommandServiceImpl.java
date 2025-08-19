@@ -1,6 +1,9 @@
 package SMU.StockMate.domain.userStock.command.service;
 
 import SMU.StockMate.domain.auth.code.ErrorCode;
+import SMU.StockMate.domain.stock.code.StockErrorCode;
+import SMU.StockMate.domain.stock.command.repository.StockCommandRepository;
+import SMU.StockMate.domain.stock.entity.Stock;
 import SMU.StockMate.domain.user.entity.User;
 import SMU.StockMate.domain.user.repository.UserRepository;
 import SMU.StockMate.domain.userStock.command.dto.StockTradingRequest;
@@ -22,6 +25,7 @@ public class UserStockCommandServiceImpl implements UserStockCommandService {
 
     private final UserRepository userRepository;
     private final UserStockCommandRepository userStockCommandRepository;
+    private final StockCommandRepository stockRepository;
 
     @Override
     public void buy(StockTradingRequest request, String email) {
@@ -64,8 +68,12 @@ public class UserStockCommandServiceImpl implements UserStockCommandService {
     }
 
     private UserStock createNewUserStock(User user, StockTradingRequest request) {
+        Stock stock = stockRepository.findByStockCode(request.getStockCode())
+                .orElseThrow(() -> new CustomException(StockErrorCode.STOCK_NOT_FOUND));
+
         return UserStock.builder()
                 .user(user)
+                .stock(stock)
                 .stockCode(request.getStockCode())
                 .quantity(0L)
                 .totalAmount(0L)
