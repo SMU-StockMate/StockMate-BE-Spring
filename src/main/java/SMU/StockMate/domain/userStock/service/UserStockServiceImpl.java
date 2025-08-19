@@ -1,12 +1,15 @@
 package SMU.StockMate.domain.userStock.service;
 
 import SMU.StockMate.domain.auth.code.ErrorCode;
+import SMU.StockMate.domain.stock.code.StockErrorCode;
+import SMU.StockMate.domain.stock.command.repository.StockCommandRepository;
+import SMU.StockMate.domain.stock.entity.Stock;
 import SMU.StockMate.domain.user.entity.User;
 import SMU.StockMate.domain.user.repository.UserRepository;
 import SMU.StockMate.domain.userStock.dto.StockTradingRequest;
 import SMU.StockMate.domain.userStock.exception.UserStockErrorCode;
-import SMU.StockMate.domain.userStock.repository.UserStockRepository;
 import SMU.StockMate.domain.userStock.entity.UserStock;
+import SMU.StockMate.domain.userStock.repository.UserStockRepository;
 import SMU.StockMate.global.apiPayload.exception.CustomException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -22,6 +25,7 @@ public class UserStockServiceImpl implements UserStockService {
 
     private final UserRepository userRepository;
     private final UserStockRepository userStockRepository;
+    private final StockCommandRepository stockRepository;
 
     @Override
     public void buy(StockTradingRequest request, String email) {
@@ -64,8 +68,12 @@ public class UserStockServiceImpl implements UserStockService {
     }
 
     private UserStock createNewUserStock(User user, StockTradingRequest request) {
+        Stock stock = stockRepository.findByStockCode(request.getStockCode())
+                .orElseThrow(() -> new CustomException(StockErrorCode.STOCK_NOT_FOUND));
+
         return UserStock.builder()
                 .user(user)
+                .stock(stock)
                 .stockCode(request.getStockCode())
                 .quantity(0L)
                 .totalAmount(0L)

@@ -1,5 +1,6 @@
 package SMU.StockMate.domain.userStock.entity;
 
+import SMU.StockMate.domain.stock.entity.Stock;
 import SMU.StockMate.domain.user.entity.User;
 import SMU.StockMate.global.entity.BaseEntity;
 import jakarta.persistence.*;
@@ -31,6 +32,10 @@ public class UserStock extends BaseEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "stock_id")
+    private Stock stock;
 
     public void addStock(Long quantity, Long totalAmount) {
         this.quantity += quantity;

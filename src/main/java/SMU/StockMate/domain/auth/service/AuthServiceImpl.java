@@ -6,6 +6,7 @@ import SMU.StockMate.domain.auth.dto.TokenResponseDTO;
 import SMU.StockMate.domain.auth.entity.RefreshToken;
 import SMU.StockMate.domain.auth.jwt.JwtUtil;
 import SMU.StockMate.domain.auth.repository.RefreshTokenRepository;
+import SMU.StockMate.domain.user.code.UserErrorCode;
 import SMU.StockMate.domain.user.entity.User;
 import SMU.StockMate.domain.user.repository.UserRepository;
 import SMU.StockMate.global.apiPayload.exception.CustomException;
@@ -25,12 +26,22 @@ public class AuthServiceImpl implements AuthService {
     @Override
     public void signup(SignupRequestDTO request) {
         if (userRepository.existsByEmail(request.username())) {
-            throw new CustomException(ErrorCode.DUPLICATE_USER);
+            throw new CustomException(UserErrorCode.USER_EMAIL_ALREADY_EXISTS);
+        }
+        if (userRepository.existsByNickname(request.nickname())) {
+            throw new CustomException(UserErrorCode.USER_NICKNAME_ALREADY_EXISTS);
+        }
+        if (userRepository.existsByAccount(request.account())) {
+            throw new CustomException(UserErrorCode.USER_ACCOUNT_ALREADY_EXISTS);
         }
 
         User user = User.builder()
                 .email(request.username())
                 .password(passwordEncoder.encode(request.password()))
+                .nickname(request.nickname())
+                .account(request.account())
+                .cashBalance(request.cashBalance())
+                .totalAsset(request.cashBalance())
                 .build();
 
         userRepository.save(user);

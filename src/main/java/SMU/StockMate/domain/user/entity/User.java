@@ -21,21 +21,26 @@ public class User extends BaseEntity {
     @Column(name = "user_id")
     private Long id;
 
+    @Column(nullable = false, unique = true)
     private String email;
 
     private String password;
 
+    @Column(nullable = false, unique = true)
     private String nickname;
 
+    @Column(nullable = false, unique = true)
     private String account; // 계좌 번호
 
     private Long totalAsset; // 전체 순 자산
 
     private Long cashBalance; // 예수금
 
-    private Long stockValuation; // 주식 평가 금액
+    @Builder.Default
+    private Long stockValuation = 0L; // 주식 평가 금액
 
-    private Long totalReturns; // 총 수익률
+    @Builder.Default
+    private Long totalReturns = 0L; // 총 수익률
 
     private String FcmToken;
 
