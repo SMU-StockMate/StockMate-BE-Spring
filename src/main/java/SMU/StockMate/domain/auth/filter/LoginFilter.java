@@ -27,8 +27,7 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
     private final JwtUtil jwtUtil;
 
     // 로그인 요청 감지
-    @Override
-    public Authentication attemptAuthentication(
+    @Override public Authentication attemptAuthentication(
             HttpServletRequest request, HttpServletResponse response) throws AuthenticationException {
 
         String username = obtainUsername(request);
