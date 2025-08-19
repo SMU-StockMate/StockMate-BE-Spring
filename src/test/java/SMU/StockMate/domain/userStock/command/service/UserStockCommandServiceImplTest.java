@@ -2,10 +2,11 @@ package SMU.StockMate.domain.userStock.command.service;
 
 import SMU.StockMate.domain.user.entity.User;
 import SMU.StockMate.domain.user.repository.UserRepository;
-import SMU.StockMate.domain.userStock.command.dto.StockTradingRequest;
-import SMU.StockMate.domain.userStock.command.exception.UserStockErrorCode;
-import SMU.StockMate.domain.userStock.command.repository.UserStockCommandRepository;
+import SMU.StockMate.domain.userStock.dto.StockTradingRequest;
+import SMU.StockMate.domain.userStock.exception.UserStockErrorCode;
+import SMU.StockMate.domain.userStock.repository.UserStockRepository;
 import SMU.StockMate.domain.userStock.entity.UserStock;
+import SMU.StockMate.domain.userStock.service.UserStockServiceImpl;
 import SMU.StockMate.global.apiPayload.exception.CustomException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -27,10 +28,10 @@ class UserStockCommandServiceImplTest {
     UserRepository userRepository;
 
     @Mock
-    UserStockCommandRepository userStockCommandRepository;
+    UserStockRepository userStockCommandRepository;
 
     @InjectMocks
-    UserStockCommandServiceImpl userStockCommandService;
+    UserStockServiceImpl userStockCommandService;
 
     private User user;
     private StockTradingRequest tradingRequest;
