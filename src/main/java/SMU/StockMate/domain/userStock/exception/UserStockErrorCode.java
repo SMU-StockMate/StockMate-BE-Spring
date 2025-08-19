@@ -1,5 +1,4 @@
-package SMU.StockMate.domain.userStock.command.exception;
-
+package SMU.StockMate.domain.userStock.exception;
 
 import SMU.StockMate.global.apiPayload.code.error.BaseErrorCode;
 import lombok.AllArgsConstructor;

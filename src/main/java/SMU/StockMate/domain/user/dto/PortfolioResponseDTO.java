@@ -1,6 +1,6 @@
 package SMU.StockMate.domain.user.dto;
 
-import SMU.StockMate.domain.userStock.command.dto.UserStockResponseDTO;
+import SMU.StockMate.domain.userStock.dto.UserStockResponseDTO;
 import lombok.Builder;
 
 import java.util.List;

@@ -1,8 +1,8 @@
-package SMU.StockMate.domain.userStock.command.controller;
+package SMU.StockMate.domain.userStock.controller;
 
 import SMU.StockMate.domain.auth.userDetails.CustomUserDetails;
-import SMU.StockMate.domain.userStock.command.dto.StockTradingRequest;
-import SMU.StockMate.domain.userStock.command.service.UserStockCommandService;
+import SMU.StockMate.domain.userStock.dto.StockTradingRequest;
+import SMU.StockMate.domain.userStock.service.UserStockService;
 import SMU.StockMate.global.apiPayload.CustomResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 @RequestMapping("/stocks")
 public class UserStockCommandController {
-    private final UserStockCommandService userStockCommandService;
+    private final UserStockService userStockCommandService;
 
     @PostMapping("/buy")
     public CustomResponse<String> buyStocks(

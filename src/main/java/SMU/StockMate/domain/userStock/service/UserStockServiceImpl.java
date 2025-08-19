@@ -1,4 +1,4 @@
-package SMU.StockMate.domain.userStock.command.service;
+package SMU.StockMate.domain.userStock.service;
 
 import SMU.StockMate.domain.auth.code.ErrorCode;
 import SMU.StockMate.domain.stock.code.StockErrorCode;
@@ -6,10 +6,10 @@ import SMU.StockMate.domain.stock.command.repository.StockCommandRepository;
 import SMU.StockMate.domain.stock.entity.Stock;
 import SMU.StockMate.domain.user.entity.User;
 import SMU.StockMate.domain.user.repository.UserRepository;
-import SMU.StockMate.domain.userStock.command.dto.StockTradingRequest;
-import SMU.StockMate.domain.userStock.command.exception.UserStockErrorCode;
-import SMU.StockMate.domain.userStock.command.repository.UserStockCommandRepository;
+import SMU.StockMate.domain.userStock.dto.StockTradingRequest;
+import SMU.StockMate.domain.userStock.exception.UserStockErrorCode;
 import SMU.StockMate.domain.userStock.entity.UserStock;
+import SMU.StockMate.domain.userStock.repository.UserStockRepository;
 import SMU.StockMate.global.apiPayload.exception.CustomException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -21,10 +21,10 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 @Slf4j
 @Transactional
-public class UserStockCommandServiceImpl implements UserStockCommandService {
+public class UserStockServiceImpl implements UserStockService {
 
     private final UserRepository userRepository;
-    private final UserStockCommandRepository userStockCommandRepository;
+    private final UserStockRepository userStockRepository;
     private final StockCommandRepository stockRepository;
 
     @Override
@@ -36,11 +36,11 @@ public class UserStockCommandServiceImpl implements UserStockCommandService {
         validateUserCashBalance(user, totalCost);
 
         // 매수하고자 하는 주식을 가지고 있으면 해당 주식을 아니면 새로운 주식 반환
-        UserStock userStock = userStockCommandRepository
+        UserStock userStock = userStockRepository
                 .findByUserIdAndStockCode(user.getId(), request.getStockCode())
                 .orElseGet(() -> {
                     UserStock newStock = createNewUserStock(user, request);
-                    return userStockCommandRepository.save(newStock);
+                    return userStockRepository.save(newStock);
                 });
 
         userStock.addStock(request.getQuantity(), totalCost);
@@ -55,7 +55,7 @@ public class UserStockCommandServiceImpl implements UserStockCommandService {
         Long totalCost = request.getQuantity() * request.getStockQuote();
 
 
-        UserStock userStock = userStockCommandRepository
+        UserStock userStock = userStockRepository
                 .findByUserIdAndStockCode(user.getId(), request.getStockCode())
                 .orElseThrow(() -> new CustomException(UserStockErrorCode.USER_STOCK_NOT_FOUND));
 

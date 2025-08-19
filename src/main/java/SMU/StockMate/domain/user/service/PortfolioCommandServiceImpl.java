@@ -4,8 +4,8 @@ import SMU.StockMate.domain.user.code.UserErrorCode;
 import SMU.StockMate.domain.user.dto.PortfolioResponseDTO;
 import SMU.StockMate.domain.user.entity.User;
 import SMU.StockMate.domain.user.repository.UserRepository;
-import SMU.StockMate.domain.userStock.command.dto.UserStockResponseDTO;
-import SMU.StockMate.domain.userStock.command.repository.UserStockCommandRepository;
+import SMU.StockMate.domain.userStock.dto.UserStockResponseDTO;
+import SMU.StockMate.domain.userStock.repository.UserStockRepository;
 import SMU.StockMate.domain.userStock.entity.UserStock;
 import SMU.StockMate.global.apiPayload.exception.CustomException;
 import lombok.RequiredArgsConstructor;
@@ -21,7 +21,7 @@ import java.util.List;
 public class PortfolioCommandServiceImpl implements PortfolioCommandService {
 
     private final UserRepository userRepository;
-    private final UserStockCommandRepository userStockRepository;
+    private final UserStockRepository userStockRepository;
 
     @Override
     public PortfolioResponseDTO getPortfolio(UserDetails userDetails) {

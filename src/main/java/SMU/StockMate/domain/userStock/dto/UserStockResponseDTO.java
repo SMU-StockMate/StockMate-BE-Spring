@@ -1,4 +1,4 @@
-package SMU.StockMate.domain.userStock.command.dto;
+package SMU.StockMate.domain.userStock.dto;
 
 import lombok.Builder;
 
