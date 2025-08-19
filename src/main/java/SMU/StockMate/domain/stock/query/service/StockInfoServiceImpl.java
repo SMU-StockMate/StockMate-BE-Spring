@@ -2,6 +2,7 @@ package SMU.StockMate.domain.stock.query.service;
 
 import SMU.StockMate.domain.stock.entity.Stock;
 import SMU.StockMate.domain.stock.query.converter.StockQueryConverter;
+import SMU.StockMate.domain.stock.query.dto.StockDetailResponse;
 import SMU.StockMate.domain.stock.query.dto.StockInfoResponse;
 import SMU.StockMate.domain.stock.query.dto.StocksInfoDto;
 import SMU.StockMate.domain.stock.query.repository.StockQueryRepository;
@@ -16,7 +17,7 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class StockSearchServiceImpl implements StockSearchService {
+public class StockInfoServiceImpl implements StockInfoService {
     private static final int DEFAULT_PAGE_SIZE = 10;
     private final StockQueryRepository stockRepository;
 
@@ -46,5 +47,17 @@ public class StockSearchServiceImpl implements StockSearchService {
 
         return StockQueryConverter
                 .toStockInfoResponse(stocksInfoDtos, nextCursor);
+    }
+
+    @Override
+    public StockDetailResponse getStockDetail(String stockCode) {
+        Stock stock = stockRepository.findByStockCode(stockCode)
+                .orElseThrow(() -> new IllegalArgumentException("알 수 없는 종목 코드: " + stockCode));
+        return StockDetailResponse.builder()
+                .stockCode(stockCode)
+                .standardCode(stock.getStandardCode())
+                .koreanName(stock.getKoreanName())
+                .basePrice(stock.getBasePrice())
+                .build();
     }
 }
