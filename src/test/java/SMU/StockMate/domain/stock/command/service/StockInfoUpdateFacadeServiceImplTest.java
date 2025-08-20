@@ -28,7 +28,7 @@ import static org.mockito.Mockito.when;
 @ExtendWith(MockitoExtension.class)
 class StockInfoUpdateFacadeServiceImplTest {
     @Mock
-    StockInfoUpdateServiceImpl stockInfoUpdateService;
+    StockInfoUpdateServiceBasic stockInfoUpdateService;
 
     @Mock
     StockCodeClientImpl stockCodeClient;

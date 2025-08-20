@@ -21,7 +21,7 @@ class StockInfoUpdateServiceImplTest {
     StockCommandRepository stockCommandRepository;
 
     @InjectMocks
-    StockInfoUpdateServiceImpl stockInfoUpdateService;
+    StockInfoUpdateServiceBasic stockInfoUpdateService;
 
     List<Stock> stocks;
 
