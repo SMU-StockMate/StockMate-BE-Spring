@@ -25,13 +25,12 @@ public class StockInfoServiceImpl implements StockInfoService {
     public StockInfoResponse search(String keyword, String cursor) {
         Pageable pageable = PageRequest.of(0, DEFAULT_PAGE_SIZE + 1);
         List<Stock> stocks;
-        LocalDate date = LocalDate.now();
 
         if (cursor == null || cursor.isEmpty()) {
-            stocks = stockRepository.findByNameContaining(date, keyword, pageable);
+            stocks = stockRepository.findByNameContaining(keyword, pageable);
         } else {
             long cursorId = Long.parseLong(cursor);
-            stocks = stockRepository.findByNameContainingNextPage(cursorId, date, keyword, pageable);
+            stocks = stockRepository.findByNameContainingNextPage(cursorId, keyword, pageable);
         }
 
         boolean hasMore = stocks.size() > DEFAULT_PAGE_SIZE;

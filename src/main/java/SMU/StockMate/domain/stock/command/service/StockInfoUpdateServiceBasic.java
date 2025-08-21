@@ -9,12 +9,11 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
-@Service
+//@Service
 @RequiredArgsConstructor
 @Transactional
-public class StockInfoUpdateServiceImpl implements StockInfoUpdateService {
+public class StockInfoUpdateServiceBasic implements StockInfoUpdateService {
     private final StockCommandRepository stockRepository;
-    private final StockUpdateLogRepository stockUpdateLogRepository;
 
     /**
      * 기존 테이블의 데이터 전체 삭제 후 업데이트
@@ -24,7 +23,4 @@ public class StockInfoUpdateServiceImpl implements StockInfoUpdateService {
         stockRepository.saveAll(stocks);
         return stocks.size();
     }
-
-
-
 }

@@ -28,4 +28,12 @@ public class Stock extends BaseEntity {
     private int basePrice;
 
     private boolean isActivate = true;
+
+    public void reActivate() {
+        this.isActivate = true;
+    }
+
+    public void deActivate() {
+        this.isActivate = false;
+    }
 }
