@@ -6,7 +6,6 @@ import SMU.StockMate.domain.notification.service.NotificationService;
 import SMU.StockMate.global.apiPayload.CustomResponse;
 import SMU.StockMate.global.apiPayload.code.success.GeneralSuccessCode;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -34,11 +33,18 @@ public class NotificationController {
         return CustomResponse.onSuccess(GeneralSuccessCode.OK, null);
     }
 
-    // 목표 가격에 도달 했는지 수동 체크할 수 있는 API
+    // 목표 가격에 도달 했는지 수동 체크
 
     @GetMapping("/alerts/check")
     public CustomResponse<Void> checkPriceAlerts() {
         notificationService.checkAndSendPriceAlerts();
+        return CustomResponse.onSuccess(GeneralSuccessCode.OK, null);
+    }
+
+    // 읽음 처리
+    @PatchMapping("/{id}/read")
+    public CustomResponse<Void> isRead(@PathVariable Long id){
+        notificationService.isRead(id);
         return CustomResponse.onSuccess(GeneralSuccessCode.OK, null);
     }
 

@@ -24,6 +24,10 @@ public class Notification extends BaseEntity {
     @Column(name = "is_read")
     private boolean isRead = false;
 
+    public void setIsRead(boolean isRead){
+        this.isRead=isRead;
+    }
+
 //    @Enumerated(EnumType.STRING)
 //    private Type type;
 
