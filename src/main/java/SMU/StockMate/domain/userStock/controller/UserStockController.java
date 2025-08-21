@@ -2,7 +2,7 @@ package SMU.StockMate.domain.userStock.controller;
 
 import SMU.StockMate.domain.auth.userDetails.CustomUserDetails;
 import SMU.StockMate.domain.userStock.dto.StockTradingRequest;
-import SMU.StockMate.domain.userStock.service.UserStockService;
+import SMU.StockMate.domain.userStock.service.command.UserStockService;
 import SMU.StockMate.global.apiPayload.CustomResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;

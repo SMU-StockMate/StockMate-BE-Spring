@@ -3,12 +3,10 @@ package SMU.StockMate.domain.dailyStock.service;
 import SMU.StockMate.domain.dailyStock.dto.DailyStockResponseDTO;
 import SMU.StockMate.domain.dailyStock.entity.DailyStock;
 import SMU.StockMate.domain.dailyStock.repository.DailyStockRepository;
+import SMU.StockMate.domain.stock.repository.StockRepository;
 import SMU.StockMate.domain.stock.entity.Stock;
-import SMU.StockMate.domain.stock.query.repository.StockQueryRepository;
 import SMU.StockMate.global.kis.TokenService;
-import SMU.StockMate.global.kis.dto.TokenResponseDto;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -38,7 +36,7 @@ public class DailyStockServiceImpl implements DailyStockService {
     private static final String PATH = "/uapi/domestic-stock/v1/quotations/inquire-daily-itemchartprice";
     private static final DateTimeFormatter KIS_FMT = DateTimeFormatter.ofPattern("yyyyMMdd");
 
-    private final StockQueryRepository stockQueryRepository;
+    private final StockRepository stockRepository;
     private final TokenService tokenService;
     private final RestTemplate restTemplate = new RestTemplate();
     private final DailyStockRepository dailyStockRepository;
@@ -47,7 +45,7 @@ public class DailyStockServiceImpl implements DailyStockService {
     @Override
     public List<DailyStockResponseDTO> getDailyStock(String stockCode, LocalDate from, LocalDate to) {
         // 종목 코드 확인
-        final Stock stock = stockQueryRepository.findByStockCode(stockCode)
+        final Stock stock = stockRepository.findByStockCode(stockCode)
                 .orElseThrow(() -> new IllegalArgumentException("알 수 없는 종목 코드: " + stockCode));
 
         // DB 조회 후 이미 있는 데이터인지 확인
