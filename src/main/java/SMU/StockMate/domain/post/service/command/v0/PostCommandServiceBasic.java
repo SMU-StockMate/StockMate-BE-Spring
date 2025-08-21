@@ -1,5 +1,6 @@
 package SMU.StockMate.domain.post.service.command.v0;
 
+import SMU.StockMate.domain.post.converter.PostConverter;
 import SMU.StockMate.domain.post.dto.PostRequest;
 import SMU.StockMate.domain.post.entity.Post;
 import SMU.StockMate.domain.post.exception.PostErrorCode;
@@ -35,12 +36,7 @@ public class PostCommandServiceBasic implements PostCommandService {
         Stock stock = stockRepository.findByStockCode(stockCode)
                 .orElseThrow(() -> new CustomException(StockErrorCode.STOCK_NOT_FOUND));
 
-        Post post = Post.builder()
-                .title(request.getTitle())
-                .content(request.getContent())
-                .stock(stock)
-                .user(user)
-                .build();
+        Post post = PostConverter.of(request, user, stock);
 
         return postRepository.save(post);
     }

@@ -1,12 +1,24 @@
 package SMU.StockMate.domain.post.converter;
 
 import SMU.StockMate.domain.post.dto.PostDto;
+import SMU.StockMate.domain.post.dto.PostRequest;
 import SMU.StockMate.domain.post.entity.Post;
+import SMU.StockMate.domain.stock.entity.Stock;
+import SMU.StockMate.domain.user.entity.User;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
 
 public class PostConverter {
+
+    public static Post of(PostRequest request, User user, Stock stock) {
+        return Post.builder()
+                .title(request.getTitle())
+                .content(request.getContent())
+                .stock(stock)
+                .user(user)
+                .build();
+    }
 
     public static PostDto toPostDto(Post post) {
         String createDateBefore = getCreateDateBefore(post);

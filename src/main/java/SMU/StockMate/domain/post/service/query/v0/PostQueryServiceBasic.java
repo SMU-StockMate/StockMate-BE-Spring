@@ -45,17 +45,21 @@ public class PostQueryServiceBasic implements PostQueryService {
         List<Post> posts;
 
         if (cursor == null || cursor.isEmpty()){
+            // 커서가 없으면 -> 첫 페이지면
             posts = postRepository.findAllByStockId(stockId, pageable);
         } else {
+            // 커서가 있으면
             long cursorId = Long.parseLong(cursor);
             posts = postRepository.findAllByStockIdWithCursor(stockId, cursorId, pageable);
         }
 
+        // 다음 페이지 확인용 게시물은 리스트에서 제거
         boolean hasMore = posts.size() > DEFAULT_PAGE_SIZE;
         if (hasMore) {
             posts.remove(posts.size() - 1);
         }
 
+        // 다음 게시물이 있으면 마지막 게시물의 ID 가져옴 없으면 null
         String nextCursor = hasMore ? posts.get(posts.size() - 1).getId().toString() : null;
 
         List<PostDto> postDtos = posts.stream()
