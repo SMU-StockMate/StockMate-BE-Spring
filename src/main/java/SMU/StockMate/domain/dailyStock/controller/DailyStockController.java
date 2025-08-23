@@ -2,7 +2,7 @@ package SMU.StockMate.domain.dailyStock.controller;
 
 import SMU.StockMate.domain.dailyStock.dto.DailyStockResponseDTO;
 import SMU.StockMate.domain.dailyStock.service.DailyStockService;
-import SMU.StockMate.domain.stock.query.repository.StockQueryRepository;
+import SMU.StockMate.domain.stock.repository.StockRepository;
 import SMU.StockMate.global.apiPayload.CustomResponse;
 import SMU.StockMate.global.apiPayload.code.success.GeneralSuccessCode;
 import lombok.RequiredArgsConstructor;
@@ -24,7 +24,7 @@ import SMU.StockMate.domain.stock.entity.Stock;
 public class DailyStockController {
 
     private final DailyStockService dailyStockService;
-    private final StockQueryRepository stockQueryRepository;
+    private final StockRepository stockRepository;
 
     // 최근 30일 조회
     @GetMapping("/30days")
@@ -33,7 +33,7 @@ public class DailyStockController {
 
 
         String symbol = stockCode;
-        String name = stockQueryRepository.findByStockCode(stockCode)
+        String name = stockRepository.findByStockCode(stockCode)
                 .map(Stock::getKoreanName)
                 .orElse("");
 
@@ -68,7 +68,7 @@ public class DailyStockController {
 
         final List<DailyStockResponseDTO> list = dailyStockService.getDailyStock(stockCode, from, to);
 
-        final String name = stockQueryRepository.findByStockCode(stockCode)
+        final String name = stockRepository.findByStockCode(stockCode)
                 .map(Stock::getKoreanName)
                 .orElse("");
 

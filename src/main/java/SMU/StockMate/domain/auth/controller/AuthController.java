@@ -3,11 +3,15 @@ package SMU.StockMate.domain.auth.controller;
 import SMU.StockMate.domain.auth.code.SuccessCode;
 import SMU.StockMate.domain.auth.dto.SignupRequestDTO;
 import SMU.StockMate.domain.auth.dto.TokenResponseDTO;
+import SMU.StockMate.domain.auth.jwt.JwtUtil;
 import SMU.StockMate.domain.auth.userDetails.CustomUserDetails;
 import SMU.StockMate.domain.auth.service.AuthService;
 import SMU.StockMate.global.apiPayload.CustomResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 

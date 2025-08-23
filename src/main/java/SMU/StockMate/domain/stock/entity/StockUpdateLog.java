@@ -1,13 +1,10 @@
 package SMU.StockMate.domain.stock.entity;
 
-import SMU.StockMate.domain.stock.enums.StockUpdateStatus;
+import SMU.StockMate.domain.stock.entity.enums.StockUpdateStatus;
 import jakarta.persistence.*;
 import lombok.*;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 
 @Table(name = "stock_update_log")
 @Entity
