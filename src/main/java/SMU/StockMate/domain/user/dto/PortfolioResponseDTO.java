@@ -3,6 +3,7 @@ package SMU.StockMate.domain.user.dto;
 import SMU.StockMate.domain.userStock.dto.UserStockResponseDTO;
 import lombok.Builder;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @Builder
@@ -12,6 +13,6 @@ public record PortfolioResponseDTO(
    Long totalAsset,
    Long cashBalance,
    Long stockValuation,
-   Long totalReturns,
+   BigDecimal totalReturns,
    List<UserStockResponseDTO.toPortfolioDTO> userStockList
 ) {}

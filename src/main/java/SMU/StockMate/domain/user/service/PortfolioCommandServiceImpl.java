@@ -13,6 +13,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.List;
 
 @Service
@@ -50,12 +52,23 @@ public class PortfolioCommandServiceImpl implements PortfolioCommandService {
                 .build();
     }
 
-    private Long calculateReturns(UserStock userStock) {
-        int currentPrice = userStock.getStock().getBasePrice();
-        Long avgPrice = userStock.getAvgPrice();
-        Long quantity = userStock.getQuantity();
+    private BigDecimal calculateReturns(UserStock us) {
+        long qty  = us.getQuantity() == null ? 0L : us.getQuantity();
+        Integer base = (us.getStock() == null) ? null : us.getStock().getBasePrice();
+        long buy = us.getTotalAmount() == null ? 0L : us.getTotalAmount();
 
-        return (currentPrice - avgPrice) * quantity;
+        // 오류/비정상 데이터 방어: 매입금액, 수량, 현재가가 유효하지 않으면 0%
+        if (buy <= 0L || qty <= 0L || base == null || base <= 0) {
+            return BigDecimal.ZERO.setScale(8);
+        }
+
+        BigDecimal buyAmount = BigDecimal.valueOf(buy);
+        BigDecimal valuation = BigDecimal.valueOf(base).multiply(BigDecimal.valueOf(qty));
+        BigDecimal profit = valuation.subtract(buyAmount);
+
+        // 수익률(%) = 손익 / 매입 * 100
+        return profit.multiply(BigDecimal.valueOf(100))
+                .divide(buyAmount, 8, RoundingMode.HALF_UP);
     }
 }
 
