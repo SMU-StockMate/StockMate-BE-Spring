@@ -65,7 +65,7 @@ public class UserStockServiceBasic implements UserStockService {
         validateUserStockQuantity(userStock, request.getQuantity());
 
         userStock.reduceStock(request.getQuantity(), totalCost);
-        user.increaseBalance(totalCost);
+        user.increaseBalance(totalCost, request.getQuantity()*userStock.getAvgPrice());
     }
 
     private UserStock createNewUserStock(User user, StockTradingRequest request) {
