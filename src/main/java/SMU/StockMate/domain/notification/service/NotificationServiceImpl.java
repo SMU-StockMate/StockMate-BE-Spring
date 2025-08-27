@@ -8,9 +8,9 @@ import SMU.StockMate.domain.notification.repository.NotificationRepository;
 import SMU.StockMate.domain.notification.repository.PriceAlertRepository;
 import SMU.StockMate.domain.notification.repository.PushTokenRepository;
 import SMU.StockMate.domain.stock.entity.Stock;
-import SMU.StockMate.domain.stock.query.dto.StockPriceResponseDTO;
-import SMU.StockMate.domain.stock.query.repository.StockQueryRepository;
-import SMU.StockMate.domain.stock.query.service.StockPriceService;
+import SMU.StockMate.domain.stock.dto.StockPriceResponseDTO;
+import SMU.StockMate.domain.stock.repository.StockRepository;
+import SMU.StockMate.domain.stock.service.query.StockPriceService;
 import SMU.StockMate.domain.user.entity.User;
 import SMU.StockMate.domain.user.repository.UserRepository;
 import jakarta.transaction.Transactional;
@@ -27,7 +27,7 @@ public class NotificationServiceImpl implements NotificationService {
     private final UserRepository userRepository;
     private final NotificationRepository notificationRepository;
     private final PriceAlertRepository priceAlertRepository;
-    private final StockQueryRepository stockQueryRepository;
+    private final StockRepository stockRepository;
     private final PushTokenRepository pushTokenRepository;
 
     private Notification createNotification(Long userId, String title, String body) {
@@ -92,7 +92,7 @@ public class NotificationServiceImpl implements NotificationService {
         List<PriceAlert> alerts = priceAlertRepository.findByTriggeredFalse();
 
         for (PriceAlert alert : alerts) {
-            Stock stock = stockQueryRepository.findByStockCode(alert.getStockCode())
+            Stock stock = stockRepository.findByStockCode(alert.getStockCode())
                     .orElseThrow(() -> new IllegalArgumentException("알 수 없는 종목 코드: " + alert.getStockCode()));
 
             StockPriceResponseDTO price = stockPriceService.getPrice(stock.getStockCode());
