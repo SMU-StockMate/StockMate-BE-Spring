@@ -21,7 +21,7 @@ import java.io.IOException;
 import java.util.List;
 @RequiredArgsConstructor
 @Service
-public class NotificationServiceImpl implements NotificationService{
+public class NotificationServiceImpl implements NotificationService {
     private final FcmService fcmService;
     private final StockPriceService stockPriceService;
     private final UserRepository userRepository;
@@ -30,38 +30,48 @@ public class NotificationServiceImpl implements NotificationService{
     private final StockQueryRepository stockQueryRepository;
     private final PushTokenRepository pushTokenRepository;
 
-    public void sendNotificationToAllTokens(Long userId, String title, String body) {
+    private Notification createNotification(Long userId, String title, String body) {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 사용자"));
 
-        List<PushToken> tokens = pushTokenRepository.findAllByUserAndActiveTrue(user);
+        Notification notification = Notification.builder()
+                .user(user)
+                .title(title)
+                .body(body)
+                .isRead(false)
+                .build();
 
-        for (PushToken token : tokens) {
-            sendNotification(user.getId(), token.getToken(), title, body);
-        }
+        return notificationRepository.save(notification);
     }
 
 
-    private void sendNotification(Long userId, String targetToken, String title, String body) {
+    private void sendPushMessage(String targetToken, String title, String body) {
         try {
-            User user = userRepository.findById(userId)
-                    .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 사용자"));
-
-            Notification notification = Notification.builder()
-                    .user(user)
-                    .title(title)
-                    .body(body)
-                    .isRead(false)
-                    .build();
-
-            notificationRepository.save(notification);
-
             fcmService.sendMessageTo(targetToken, title, body);
-
         } catch (IOException e) {
             throw new RuntimeException("FCM 전송 실패", e);
         }
     }
+
+
+    public void sendNotificationToAllTokens(Long userId, String title, String body) {
+        Notification notification = createNotification(userId, title, body);
+
+        User user = notification.getUser();
+        List<PushToken> tokens = pushTokenRepository.findAllByUserAndActiveTrue(user);
+
+        for (PushToken token : tokens) {
+            sendPushMessage(token.getToken(), title, body);
+        }
+    }
+
+    @Transactional
+    public void isRead(Long id) {
+        Notification notification = notificationRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("알림이 존재하지 않습니다."));
+        notification.setIsRead(true);
+    }
+
     @Transactional
     public void registerPriceAlert(PriceAlertRequestDTO dto) {
         User user = userRepository.findById(dto.getUserId())
@@ -87,28 +97,20 @@ public class NotificationServiceImpl implements NotificationService{
 
             StockPriceResponseDTO price = stockPriceService.getPrice(stock.getStockCode());
 
-            if (price.getPrice() >= alert.getTargetPrice()) { // 현재가가 목표가격보다 같거나 클 때 알림을 보냄
+            if (price.getPrice() >= alert.getTargetPrice()) {
                 User user = alert.getUser();
+                String title = stock.getKoreanName() + " 목표가 도달";
+                String body = "현재가 " + price.getPrice() + "원이 목표가를 넘었습니다!";
+
+                Notification notification = createNotification(user.getId(), title, body);
+
                 List<PushToken> tokens = pushTokenRepository.findAllByUserAndActiveTrue(user);
                 for (PushToken token : tokens) {
-                    sendNotification(
-                            user.getId(),
-                            token.getToken(),
-                            stock.getKoreanName() + " 목표가 도달",
-                            "현재가 " + price.getPrice() + "원이 목표가를 넘었습니다!"
-                    );
+                    sendPushMessage(token.getToken(), title, body);
                 }
 
                 alert.setTriggered(true);
             }
         }
-
-    }
-    @Transactional
-    public void isRead(Long id){
-        Notification notification= notificationRepository.findById(id)
-                .orElseThrow(()->new IllegalArgumentException("알림이 존재하지 않습니다."));
-
-        notification.setIsRead(true);
     }
 }
