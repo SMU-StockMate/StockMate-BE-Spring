@@ -5,6 +5,7 @@ import SMU.StockMate.global.entity.BaseEntity;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -40,7 +41,10 @@ public class User extends BaseEntity {
     private Long stockValuation = 0L; // 주식 평가 금액
 
     @Builder.Default
-    private Long totalReturns = 0L; // 총 수익률
+    private Long stockTotalBuyAmount = 0L; // 주식 매입 금액
+
+    @Builder.Default
+    private BigDecimal totalReturns = BigDecimal.ZERO; // 총 수익률
 
     private String FcmToken;
 
@@ -51,10 +55,11 @@ public class User extends BaseEntity {
     public void decreaseBalance(Long cost) {
         this.stockValuation += cost;
         this.cashBalance -= cost;
+        this.stockTotalBuyAmount += cost;
     }
 
-    // 주식을 매도한 경우
-    public void increaseBalance(Long cost) {
+    // 주식을 매도한 경우(cost -> 주식 평가 금액, buyCost -> 주식 매입 금액)
+    public void increaseBalance(Long cost, Long buyCost) {
         this.stockValuation -= cost;
         this.cashBalance += cost;
     }
